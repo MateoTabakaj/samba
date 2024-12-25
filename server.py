@@ -174,18 +174,18 @@ def rename_file(filename):
     
     return redirect(url_for('index'))
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         if username not in users:
-#             users[username] = generate_password_hash(password)
-#             flash('User successfully registered')
-#             return redirect(url_for('login'))
-#         else:
-#             flash('User already exists')
-#     return render_template('register.html')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username not in users:
+            users[username] = generate_password_hash(password)
+            flash('User successfully registered')
+            return redirect(url_for('login'))
+        else:
+            flash('User already exists')
+    return render_template('register.html')
 
 @app.route('/open_folder/<foldername>')
 @login_required
