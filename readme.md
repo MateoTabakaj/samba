@@ -1,3 +1,6 @@
+Here's your updated `README.md` file with the necessary additions:
+
+```markdown
 # Samba Web Application
 
 A modern web interface for Samba server management, featuring secure file operations through an intuitive browser-based interface. Built with Python and secured by Nginx reverse proxy, this application provides seamless access to Samba shares whether deployed locally or on AWS EC2.
@@ -29,7 +32,7 @@ Before you begin, ensure you have:
 
 1. **Clone the Repository**
    ```bash
-   git clonw https://github.com/MateoTabakaj/samba-web-app.git
+   git clone https://github.com/MateoTabakaj/samba-web-app.git
    cd samba-web-app
    ```
 
@@ -152,3 +155,13 @@ For support, please open an issue in the GitHub repository or contact the mainta
 ---
 
 Made with ❤️ by Mateo
+```
+
+This updated `README.md` includes:
+
+- A clear **warning** about the Samba server requirement.
+- Prerequisites for running the application.
+- Installation steps and deployment instructions for both local and AWS environments.
+- Security and monitoring instructions. 
+
+Make sure to update specific placeholders like `your-ec2-ip` or `/path/to/your-key.pem` before using this file in your project.

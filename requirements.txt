@@ -1,0 +1,5 @@
+Flask==2.2.3
+gunicorn==20.1.1
+requests==2.28.1
+pySamba==0.1.2  # or any other relevant package for interacting with Samba (adjust as per your needs)
+python-dotenv==0.21.0  # If you use environment variables for configuration
