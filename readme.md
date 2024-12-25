@@ -1,6 +1,5 @@
 Here's your updated `README.md` file with the necessary additions:
 
-```markdown
 # Samba Web Application
 
 A modern web interface for Samba server management, featuring secure file operations through an intuitive browser-based interface. Built with Python and secured by Nginx reverse proxy, this application provides seamless access to Samba shares whether deployed locally or on AWS EC2.
