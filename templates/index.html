@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>File Explorer</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon32X32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon16X16.png') }}">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon128X128.png') }}">
+    </head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='favicon32X32.png') }}" alt="Favicon" width="32" height="32" class="d-inline-block align-text-top">
+            File Explorer
+        </a>
+        <div class="d-flex">
+            <a class="btn btn-outline-light" href="{{ url_for('upload_file') }}">Upload File</a>
+            <a class="btn btn-outline-light ms-2" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Main container -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4">File Explorer</h1>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-warning" role="alert">
+        {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- File list -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for file in files %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- File icon based on file extension -->
+                    {% if file.endswith('.txt') %}
+                        <i class="fas fa-file-alt"></i>
+                    {% elif file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png') %}
+                        <i class="fas fa-file-image"></i>
+                    {% elif file.endswith('.pdf') %}
+                        <i class="fas fa-file-pdf"></i>
+                    {% elif file.endswith('.zip') %}
+                        <i class="fas fa-file-archive"></i>
+                    {% elif file.endswith('.mp4') or file.endswith('.avi') %}
+                        <i class="fas fa-video"></i>
+                    {% else %}
+                        <i class="fas fa-file"></i>
+                    {% endif %}
+                    <h5 class="card-title mt-3">{{ file }}</h5>
+
+                    <!-- Action buttons (aligned to bottom-right) -->
+                    <div class="action-buttons">
+                        {% if is_folder(file) %}
+                        <!-- Open Folder Button -->
+                        <a href="{{ url_for('open_folder', foldername=file) }}" class="btn btn-outline-primary mb-2">
+                            <i class="fas fa-folder-open"></i>
+                        </a>
+                        <a href="{{ url_for('download_file', filename=file) }}" class="btn btn-outline-secondary mb-2">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('download_file', filename=file) }}" class="btn btn-outline-secondary mb-2">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        {% endif %}
+
+                        <!-- Delete file -->
+                        <form action="{{ url_for('delete_file', filename=file) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-outline-danger mb-2">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+
+                        <!-- Trigger for Rename modal -->
+                        <button class="btn btn-outline-warning mb-2" data-bs-toggle="modal" data-bs-target="#renameModal" data-filename="{{ file }}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Rename File Modal -->
+<div class="modal fade" id="renameModal" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Rename File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('rename_file', filename='temp') }}" method="POST">
+          <input type="hidden" name="old_name" id="oldName">
+          <div class="mb-3">
+            <label for="new_name" class="form-label">New Filename</label>
+            <input type="text" class="form-control" name="new_name" id="newName" required>
+          </div>
+          <button type="submit" class="btn btn-warning">Rename</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS (optional but recommended for interactivity) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // JavaScript to update the modal with the correct file name
+  var renameModal = document.getElementById('renameModal');
+  renameModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var filename = button.getAttribute('data-filename');
+    var modalTitle = renameModal.querySelector('.modal-title');
+    var oldNameInput = document.getElementById('oldName');
+    var newNameInput = document.getElementById('newName');
+
+    modalTitle.textContent = 'Rename ' + filename;
+    oldNameInput.value = filename;  // Set old name for the hidden field
+    newNameInput.value = filename;  // Pre-fill with current filename
+  });
+</script>
+
+</body>
+</html>
