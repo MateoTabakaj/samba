@@ -11,6 +11,9 @@ A modern web interface for Samba server management, featuring secure file operat
 - **Flexible Deployment**: Support for both local and AWS EC2 deployment
 
 ## 📋 Prerequisites
+**⚠️ Warning: First you need to have a Samba server running. This application integrates with a Samba server to interact with shares and files.**
+
+This is a web application that integrates with a Samba server, allowing users to interact with it through a web interface. The app uses **Gunicorn** as the application server and **Nginx** as the reverse proxy. It is designed to be deployed both locally and on AWS EC2 instances.
 
 Before you begin, ensure you have:
 
@@ -26,7 +29,7 @@ Before you begin, ensure you have:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/samba-web-app.git
+   git clonw https://github.com/MateoTabakaj/samba-web-app.git
    cd samba-web-app
    ```
 
